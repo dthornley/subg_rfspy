@@ -87,11 +87,19 @@ void configure_radio()
   CHANNR    = 0x02; // channel number
   PA_TABLE1 = 0xC0; // pa power setting 10 dBm
 #else
+#if RADIO_LOCALE
+  FREQ2     = 0x12; // frequency control word, high byte
+  FREQ1     = 0x14; // frequency control word, middle byte
+  FREQ0     = 0x60; // frequency control word, low byte
+  CHANNR    = 0x00; // channel number (TODO: check this)
+  PA_TABLE1 = 0xC0; // Max configurable power output at this frequency is 0xC0
+#else
   FREQ2     = 0x24; // frequency control word, high byte
   FREQ1     = 0x2E; // frequency control word, middle byte
   FREQ0     = 0x38; // frequency control word, low byte
   CHANNR    = 0x00; // channel number
   PA_TABLE1 = 0xC2; // Max configurable power output at this frequency is 0xC2
+#endif
 #endif
 
   IEN2 |= IEN2_RFIE;
